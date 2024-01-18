@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'slave01'
-    }
+    agent {label 'slave01'}
 
       environment {
         MAVEN_HOME = tool 'Maven'
@@ -13,7 +11,7 @@ pipeline {
         stage('checkout') {
             steps {
                 sh 'rm -rf '
-                sh 'https://github.com/Jagruthi111/weather-update.git'
+                sh 'git clone https://github.com/Jagruthi111/weather-update.git'
             }
         }
 
