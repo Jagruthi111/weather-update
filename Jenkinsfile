@@ -28,45 +28,26 @@ pipeline {
             }
         }
 
-        stage('Show Contents of target') {
-            steps {
-                script {
-                    // Print the contents of the target directory
-                    sh 'ls -l target'
-                }
-            }
-        }
 
-        stage('Run JAR Locally') {
+        stage('run jar file') {
             steps {
                 script {
-                    // Run the JAR file using java -jar
+                   
                     sh "java -jar target/${JAR_FILE}"
                 }
             }
         }
 
-        stage('Deploy JAR to Tomcat') {
+        stage('Deploy') {
             steps {
                 script {
-                    // Copy JAR to Tomcat server
+                   
                     sh "scp target/${JAR_FILE} ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_DIR}/"
 
-                    // SSH into Tomcat server and restart Tomcat
                     sh "ssh ${TOMCAT_USER}@${TOMCAT_HOST} 'bash -s' < restart-tomcat.sh"
 
-                    echo "Application deployed and Tomcat restarted"
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Build, Run, and Deployment to Tomcat successful!"
-        }
-        failure {
-            echo "Build, Run, and Deployment to Tomcat failed!"
         }
     }
 }
