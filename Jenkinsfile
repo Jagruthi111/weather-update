@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
                    
-                    sh "java -jar target/${JAr&"
+                    sh "java -jar target/weather-update-1.0-SNAPSHOT.jar&"
 
                     sleep 30
                 }
