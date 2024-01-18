@@ -14,7 +14,7 @@ pipeline {
         stage('checkout') {
             steps {
                 sh 'rm -rf '
-                sh 'git clone https://github.com/Jagruthi111/bus_booking.git'
+                sh 'https://github.com/Jagruthi111/weather-update.git'
             }
         }
 
