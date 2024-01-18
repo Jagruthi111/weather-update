@@ -33,7 +33,9 @@ pipeline {
             steps {
                 script {
                    
-                    sh "java -jar target/${JAR_FILE}"
+                    sh "java -jar target/${JAR_FILE}&"
+
+                    sleep 30
                 }
             }
         }
