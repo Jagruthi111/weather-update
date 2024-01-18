@@ -3,12 +3,11 @@ pipeline {
         label 'slave01'
     }
 
-    environment {
-        TOMCAT_HOST = '172.31.2.55'
-        TOMCAT_USER = 'root'
-        TOMCAT_DIR = '/opt/apache-tomcat-8.5.98/webapps'
-        JAR_FILE = 'weather-update-1.0-SNAPSHOT.jar'  // Replace with the actual name of your JAR file
+      environment {
+        MAVEN_HOME = tool 'Maven'
+        //SPRING_PROFILES_ACTIVE = 'local' 
     }
+
 
     stages {
         stage('checkout') {
@@ -21,19 +20,17 @@ pipeline {
         stage('build') {
             steps {
                 script {
-                    def mvnHome = tool 'Maven'
-                    def mvnCMD = "${mvnHome}/bin/mvn"
-                    sh "${mvnCMD} clean install"
+                     sh "${MAVEN_HOME}/bin/mvn clean package"
                 }
             }
         }
 
 
-        stage('run jar file') {
+        stage('run jar') {
             steps {
                 script {
                    
-                    sh "java -jar target/${JAR_FILE}&"
+                    sh "java -jar target/${JAr&"
 
                     sleep 30
                 }
@@ -43,10 +40,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                   
-                    sh "scp target/${JAR_FILE} ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_DIR}/"
-
-                    sh "ssh ${TOMCAT_USER}@${TOMCAT_HOST} 'bash -s' < restart-tomcat.sh"
+			 sh 'ssh root@172.31.2.55'
+			 sh 'scp target/weather-update-1.0-SNAPSHOT.jar root@172.31.2.55:/opt/apache-tomcat-8.5.98/webapps/'
 
                 }
             }
